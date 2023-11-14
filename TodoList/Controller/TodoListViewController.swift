@@ -9,16 +9,16 @@ import UIKit
 import CoreData
 
 class TodoListViewController: UITableViewController {
+
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var itemArray = [TodoItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
-        // Do any additional setup after loading the view.
-//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
-    
+//MARK -Table view data source method
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
@@ -31,10 +31,11 @@ class TodoListViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+//        itemArray[indexPath.row].setValue("o kia ", forKey: "title")
         tableView.deselectRow(at: indexPath, animated: true)
         saveItems()
     }
-    
+//MARK - add item
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add a todo item", message: "", preferredStyle: .alert)
@@ -70,17 +71,32 @@ class TodoListViewController: UITableViewController {
         }
         self.tableView.reloadData()
     }
-    func loadData (){
+    //gia tri mac dinh neu khong co tham so request la TodoItem.fetchRequest()
+    func loadData (with request: NSFetchRequest<TodoItem> = TodoItem.fetchRequest()){
         do {
-//            Angela Yu
-//            let request: NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
-            
-            let request = NSFetchRequest<TodoItem>(entityName: "TodoItem")
-            
             itemArray = try context.fetch(request)
         } catch  {
             print("read file error \(error)")
         }
+        tableView.reloadData()
     }
+    
 }
 
+extension TodoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
+        request.predicate = NSPredicate(format:"title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        loadData(with: request)
+        
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadData()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
