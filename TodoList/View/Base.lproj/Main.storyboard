@@ -41,13 +41,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="ListItems" id="hEH-dq-bha">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="buW-fV-eVM">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="0Cu-vA-5PN" id="Pi0-pL-Mha"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="Rt3-9M-E17" id="Nxf-I1-cc9"/>
                         <outlet property="tableView" destination="tC4-Kl-qfU" id="vZ7-Cb-I9c"/>
                     </connections>
                 </tableViewController>
@@ -60,8 +60,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UWa-50-tyv" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YfR-Pk-ujk">
-                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="YfR-Pk-ujk">
+                        <rect key="frame" x="0.0" y="47" width="390" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" name="AccentColor"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
